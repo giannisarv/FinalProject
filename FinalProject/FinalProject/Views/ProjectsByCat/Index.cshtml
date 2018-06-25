@@ -38,6 +38,8 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
+    
+    
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.HeroUrl)
@@ -58,20 +60,12 @@
                 @Html.DisplayFor(modelItem => item.Category.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Person.Email)
+                @Html.DisplayFor(modelItem => item.Person.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
-
-                <a>
-                    @if (User.Identity.Name == item.Person.Email)
-                    {
-                        Html.ActionLink("Packages", "Index", "PackagesPrjct", new { id = item.Id }, null);
-                    }
-                </a>
-                }
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

@@ -20,10 +20,16 @@ namespace FinalProject.Controllers
         }
 
         // GET: Packages
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long? id)
         {
-            var finalProjectContext = _context.Package.Include(p => p.Project);
+            var pckgs = (from m in _context.Package
+                             //join sem in _context.Project on m.Id equals sem.Id
+                         where m.ProjectId == id
+                         select m);// new 
+            var finalProjectContext = pckgs.Include(p => p.Project);//.Include(p => p.Person);
             return View(await finalProjectContext.ToListAsync());
+            //var finalProjectContext = _context.Package.Include(p => p.Project);
+            //return View(await finalProjectContext.ToListAsync());
         }
 
         // GET: Packages/Details/5
@@ -55,9 +61,9 @@ namespace FinalProject.Controllers
                          .FirstOrDefault();
 
             var prjcts = (from m in _context.Project
-                          join sem in _context.Package on m.Id equals sem.ProjectId
+                              //join sem in _context.Project on m.ProjectId  equals sem.Id
                           where m.PersonId == userid
-                          select new { m.Title, sem.ProjectId, m.Id }).Distinct();
+                          select new { m.Title, m.Id }).Distinct();
             // ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description");
             ViewData["ProjectId"] = new SelectList(prjcts,"Id","Title");
             return View();
@@ -74,10 +80,11 @@ namespace FinalProject.Controllers
             {
                 _context.Add(package);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect("~");
                 // return RedirectToAction( "Index", new RouteValueDictionary( 
                 // new { controller = "PackagesPrjct", action = "Index",  @id = id  } ) );
-               //RedirectToPage
+                //return RedirectToPage()
             }
             string useridd = HttpContext.User.Identity.Name;
             var userid = (from m in _context.AspNetUsers
@@ -86,9 +93,9 @@ namespace FinalProject.Controllers
                          .FirstOrDefault();
 
             var prjcts = (from m in _context.Project
-                          join sem in _context.Package on m.Id equals sem.ProjectId
+                              //join sem in _context.Project on m.ProjectId  equals sem.Id
                           where m.PersonId == userid
-                          select new { m.Title, sem.ProjectId,m.Id }).Distinct();
+                          select new { m.Title, m.Id }).Distinct();
             //ViewData["ProjectId"] = new SelectList(prjcts);
             ViewData["ProjectId"] = new SelectList(prjcts, "Id", "Title", package.ProjectId);
 
@@ -115,9 +122,9 @@ namespace FinalProject.Controllers
                          .FirstOrDefault();
 
             var prjcts = (from m in _context.Project
-                          join sem in _context.Package on m.Id equals sem.ProjectId
+                              //join sem in _context.Project on m.ProjectId  equals sem.Id
                           where m.PersonId == userid
-                          select new { m.Title, sem.ProjectId, m.Id }).Distinct();
+                          select new { m.Title, m.Id }).Distinct();
             //ViewData["ProjectId"] = new SelectList(prjcts);
             ViewData["ProjectId"] = new SelectList(prjcts, "Id", "Title", package.ProjectId);
             //ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Title", package.ProjectId);

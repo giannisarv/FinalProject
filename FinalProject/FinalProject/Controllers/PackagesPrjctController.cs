@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
-using System.Data.SqlClient;
+using System.Web;
 
 namespace FinalProject.Controllers
 {
@@ -72,12 +71,12 @@ namespace FinalProject.Controllers
                          .FirstOrDefault();
 
             var prjcts = (from m in _context.Project
-                          join sem in _context.Package on m.Id equals sem.ProjectId
+                         // join sem in _context.Package on m.Id equals sem.ProjectId
                           where m.PersonId == userid
-                          select new { m.Title, sem.ProjectId, m.Id }).Distinct();
+                          select new { m.Title, m.Id }).Distinct();
             // ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description");
             ViewData["ProjectId"] = new SelectList(prjcts, "Id", "Title");
-            return View("~/PackagesPrjct/Index");
+            return View();
 
             //return View();
         }
@@ -93,7 +92,15 @@ namespace FinalProject.Controllers
             {
                 _context.Add(package);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectUrl(nameof(Index));
+                //return RedirectToAction("Index");
+                //var request = HttpContext.Request;
+                //var referrer = request.UrlReferrer;
+                //return Redirect(Request.UrlReferrer.ToString());
+                return Redirect("https://localhost:44361");
+                //Response.Redirect(Request.UrlReferrer.AbsoluteUri.ToString());
+                //return RedirectToAction("Create",
+            //new { returnUrl = Request.UrlReferrer.ToString() });
             }
 
             string useridd = HttpContext.User.Identity.Name;
@@ -103,15 +110,15 @@ namespace FinalProject.Controllers
                          .FirstOrDefault();
 
             var prjcts = (from m in _context.Project
-                          join sem in _context.Package on m.Id equals sem.ProjectId
+                          //join sem in _context.Package on m.Id equals sem.ProjectId
                           where m.PersonId == userid
-                          select new { m.Title, sem.ProjectId, m.Id }).Distinct();
+                          select new { m.Title, m.Id }).Distinct();
             // ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Description");
             
 
             ViewData["ProjectId"] = new SelectList(prjcts, "Id", "Title", package.ProjectId);
 
-            return View("~/PackagesPrjct/Index");
+            return View();
             //ViewData["ProjectId"] = new SelectList(prjcts);
             //ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Title", package.ProjectId);
 
@@ -139,12 +146,12 @@ namespace FinalProject.Controllers
                          .FirstOrDefault();
 
             var prjcts = (from m in _context.Project
-                          join sem in _context.Package on m.Id equals sem.ProjectId
+                          //join sem in _context.Package on m.Id equals sem.ProjectId
                           where m.PersonId == userid
-                          select m.Title).Distinct();
+                          select new { m.Title, m.Id }).Distinct();
 
-            // ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Title", package.ProjectId);
-            ViewData["ProjectId"] = new SelectList(prjcts);
+             ViewData["ProjectId"] = new SelectList(prjcts, "Id", "Title", package.ProjectId);
+            //ViewData["ProjectId"] = new SelectList(prjcts);
             return View();
         }
 
@@ -178,11 +185,23 @@ namespace FinalProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return Redirect("https://localhost:44361");
             }
+            string useridd = HttpContext.User.Identity.Name;
+            var userid = (from m in _context.AspNetUsers
+                          where m.Email == useridd
+                          select m.Id)
+                         .FirstOrDefault();
 
+            var prjcts = (from m in _context.Project
+                              //join sem in _context.Package on m.Id equals sem.ProjectId
+                          where m.PersonId == userid
+                          select new { m.Title, m.Id }).Distinct();
 
-            ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Title", package.ProjectId);
+            ViewData["ProjectId"] = new SelectList(prjcts, "Id", "Title", package.ProjectId);
+
+            //ViewData["ProjectId"] = new SelectList(_context.Project, "Id", "Title", package.ProjectId);
             return View();
         }
 
@@ -213,7 +232,8 @@ namespace FinalProject.Controllers
             var package = await _context.Package.FindAsync(id);
             _context.Package.Remove(package);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            // return RedirectToAction(nameof(Index));
+            return Redirect("https://localhost:44361");
         }
 
         private bool PackageExists(long id)

@@ -6,42 +6,26 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace FinalProject.Controllers
 {
-    public class ProjectsController : Controller
+    public class ProjectFundsController : Controller
     {
         private readonly FinalProjectContext _context;
 
-        public ProjectsController(FinalProjectContext context)
+        public ProjectFundsController(FinalProjectContext context)
         {
             _context = context;
         }
 
-       
-
-        // GET: Projects
+        // GET: ProjectFunds
         public async Task<IActionResult> Index()
         {
-            string useridd = HttpContext.User.Identity.Name;
-            var userid =( from m in _context.AspNetUsers
-                         where m.Email == useridd
-                         select m.Id)
-                         .FirstOrDefault();
-
-            var prjcts = from m in _context.Project
-                         join sem in _context.Category on m.CategoryId equals sem.Id
-                         where m.PersonId == userid
-                         select m;
-                         
-
-            var finalProjectContext = prjcts.Include(p => p.Category).Include(p => p.Person);
+            var finalProjectContext = _context.Project.Include(p => p.Category).Include(p => p.Person);
             return View(await finalProjectContext.ToListAsync());
-           // return View(prjcts);
         }
 
-        // GET: Projects/Details/5
+        // GET: ProjectFunds/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -61,24 +45,15 @@ namespace FinalProject.Controllers
             return View(project);
         }
 
-        // GET: Projects/Create
+        // GET: ProjectFunds/Create
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title");
-            //ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
-
-
-            string useridd = HttpContext.User.Identity.Name;
-
-            var userid = from m in _context.AspNetUsers
-                         where m.Email == useridd
-                         select m.Id;
-
-            ViewData["PersonId"] = new SelectList(userid);
+            ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id");
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: ProjectFunds/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -89,24 +64,14 @@ namespace FinalProject.Controllers
             {
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return Redirect("https://localhost:44361");
+                return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
-
-            string useridd = HttpContext.User.Identity.Name;
-
-            var userid = from m in _context.AspNetUsers
-                         where m.Email == useridd
-                         select m.Id;
-
-            //ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
-            ViewData["PersonId"] = new SelectList(userid);
+            ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
             return View(project);
-
-           
         }
 
-        // GET: Projects/Edit/5
+        // GET: ProjectFunds/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -120,23 +85,16 @@ namespace FinalProject.Controllers
                 return NotFound();
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
-            //ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
-            string useridd = HttpContext.User.Identity.Name;
-
-            var userid = from m in _context.AspNetUsers
-                         where m.Email == useridd
-                         select m.Id;
-
-            ViewData["PersonId"] = new SelectList(userid);
+            ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
             return View(project);
         }
 
-        // POST: Projects/Edit/5
+        // POST: ProjectFunds/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,PersonId,CategoryId,HeroUrl,Title,Description,Deadline,Goal")] Project project)
+        public async Task<IActionResult> Edit(long id, [Bind("Goal")] Project project)
         {
             if (id != project.Id)
             {
@@ -161,21 +119,14 @@ namespace FinalProject.Controllers
                         throw;
                     }
                 }
-                return Redirect("https://localhost:44361");
+                return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
-            string useridd = HttpContext.User.Identity.Name;
-
-            var userid = from m in _context.AspNetUsers
-                         where m.Email == useridd
-                         select m.Id;
-
-            ViewData["PersonId"] = new SelectList(userid);
-            //ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
+            ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
             return View(project);
         }
 
-        // GET: Projects/Delete/5
+        // GET: ProjectFunds/Delete/5
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -195,7 +146,7 @@ namespace FinalProject.Controllers
             return View(project);
         }
 
-        // POST: Projects/Delete/5
+        // POST: ProjectFunds/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
@@ -203,7 +154,7 @@ namespace FinalProject.Controllers
             var project = await _context.Project.FindAsync(id);
             _context.Project.Remove(project);
             await _context.SaveChangesAsync();
-            return Redirect("https://localhost:44361");
+            return RedirectToAction(nameof(Index));
         }
 
         private bool ProjectExists(long id)
