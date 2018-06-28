@@ -29,7 +29,7 @@ namespace CrowdFunding.Controllers
                                  select d;
 
             var userProjectDetailsContext = await projectDetails
-                //.Include(p => p.Project)
+                .Include(p => p.Project)
                 //.Include(p => p.Person)
                 .ToListAsync();
             return View(userProjectDetailsContext);

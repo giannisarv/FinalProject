@@ -162,5 +162,12 @@ namespace CrowdFunding.Controllers
 
         private long UserId() =>
             long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+        // GET: ProjectUpdates/Create
+        public IActionResult ProjectUpdate(long id)
+        {
+            return RedirectToAction("Create", "Details");
+        }
+
     }
 }
