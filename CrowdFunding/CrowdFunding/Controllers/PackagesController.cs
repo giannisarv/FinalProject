@@ -47,7 +47,7 @@ namespace CrowdFunding.Controllers
         // GET: Packages/Create
         public IActionResult Create()
         {
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description");
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title");
             return View();
         }
 
@@ -64,7 +64,7 @@ namespace CrowdFunding.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description", package.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", package.ProjectId);
             return View(package);
         }
 
@@ -81,7 +81,7 @@ namespace CrowdFunding.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description", package.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", package.ProjectId);
             return View(package);
         }
 
@@ -117,7 +117,7 @@ namespace CrowdFunding.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description", package.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", package.ProjectId);
             return View(package);
         }
 

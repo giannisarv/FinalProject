@@ -48,7 +48,7 @@ namespace CrowdFunding.Controllers
         // GET: PersonPackages/Create
         public IActionResult Create()
         {
-            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Description");
+            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Name");
             ViewData["PersonId"] = new SelectList(_context.Person, "Id", "Email");
             return View();
         }
@@ -66,7 +66,7 @@ namespace CrowdFunding.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Description", personPackage.PackageId);
+            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Name", personPackage.PackageId);
             ViewData["PersonId"] = new SelectList(_context.Person, "Id", "Email", personPackage.PersonId);
             return View(personPackage);
         }
@@ -84,7 +84,7 @@ namespace CrowdFunding.Controllers
             {
                 return NotFound();
             }
-            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Description", personPackage.PackageId);
+            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Name", personPackage.PackageId);
             ViewData["PersonId"] = new SelectList(_context.Person, "Id", "Email", personPackage.PersonId);
             return View(personPackage);
         }
@@ -121,7 +121,7 @@ namespace CrowdFunding.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Description", personPackage.PackageId);
+            ViewData["PackageId"] = new SelectList(_context.Package, "PackageId", "Name", personPackage.PackageId);
             ViewData["PersonId"] = new SelectList(_context.Person, "Id", "Email", personPackage.PersonId);
             return View(personPackage);
         }

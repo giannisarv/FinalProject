@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CrowdFunding.Models;
+using System.Security.Claims;
 
 namespace CrowdFunding.Controllers
 {
@@ -21,8 +22,20 @@ namespace CrowdFunding.Controllers
         // GET: Details
         public async Task<IActionResult> Index()
         {
-            var crowdFundingContext = _context.Detail.Include(d => d.Project);
-            return View(await crowdFundingContext.ToListAsync());
+            //get projectDetails from userProjects
+            var projectDetails = from d in _context.Detail
+                                 join p in _context.Projects on d.ProjectId equals p.ProjectId
+                                 where p.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                                 select d;
+
+            var userProjectDetailsContext = await projectDetails
+                //.Include(p => p.Project)
+                //.Include(p => p.Person)
+                .ToListAsync();
+            return View(userProjectDetailsContext);
+
+            //var crowdFundingContext = _context.Detail.Include(d => d.Project);
+            //return View(await crowdFundingContext.ToListAsync());
         }
 
         // GET: Details/Details/5
@@ -47,7 +60,13 @@ namespace CrowdFunding.Controllers
         // GET: Details/Create
         public IActionResult Create()
         {
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description");
+            //It brings only userloged projects for adding new detail
+            var userProjects = from m in _context.Projects
+                               where m.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                               select m;
+
+            var userProjectContext = userProjects.Include(p => p.Category).Include(p => p.Person);
+            ViewData["ProjectId"] = new SelectList(userProjectContext, "ProjectId", "Title");
             return View();
         }
 
@@ -64,7 +83,7 @@ namespace CrowdFunding.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description", detail.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", detail.ProjectId);
             return View(detail);
         }
 
@@ -81,8 +100,17 @@ namespace CrowdFunding.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description", detail.ProjectId);
-            return View(detail);
+
+            //ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", detail.ProjectId);
+            //return View(detail);
+
+            var userProjects = from m in _context.Projects
+                               where m.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                               select m;
+
+            var userProjectContext = userProjects.Include(p => p.Category).Include(p => p.Person);
+            ViewData["ProjectId"] = new SelectList(userProjectContext, "ProjectId", "Title");
+            return View();
         }
 
         // POST: Details/Edit/5
@@ -117,7 +145,7 @@ namespace CrowdFunding.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Description", detail.ProjectId);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", detail.ProjectId);
             return View(detail);
         }
 
