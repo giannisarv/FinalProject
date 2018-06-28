@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
+using System.Data.SqlClient;
 
 namespace FinalProject.Controllers
 {
@@ -19,10 +20,33 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectFunds
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long? id)
         {
+
+            var prjpac = (from m in _context.Package
+                          join sem in _context.Project on m.ProjectId equals sem.Id
+                          where m.Id == id
+                          select (sem.Progress + m.Value)).FirstOrDefault();
+
+            var prid = (from m in _context.Package
+                        join sem in _context.Project on m.ProjectId equals sem.Id
+                        where m.Id == id
+                        select m.ProjectId).FirstOrDefault();
+
+            var result = (from p in _context.Project
+                          where p.Id == prid
+                          select p).SingleOrDefault();
+
+            result.Progress = prjpac;
+
+            _context.SaveChanges();
+
+            //SqlCommand comm = new SqlCommand("UPDATE Project SET Progress=@goal WHERE Id==@id");
+            //comm.Parameters.AddWithValue("@goal", prjpac);
+            //comm.Parameters.AddWithValue("@id", prid);
+
             var finalProjectContext = _context.Project.Include(p => p.Category).Include(p => p.Person);
-            return View(await finalProjectContext.ToListAsync());
+            return View("~/Views/ProjectsAll/Index.cshtml", await finalProjectContext.ToListAsync());
         }
 
         // GET: ProjectFunds/Details/5

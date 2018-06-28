@@ -97,10 +97,12 @@ namespace FinalProject.Controllers
                 //var request = HttpContext.Request;
                 //var referrer = request.UrlReferrer;
                 //return Redirect(Request.UrlReferrer.ToString());
-                return Redirect("https://localhost:44361");
+                //RedirectToRoute("~/PackagesPrjct/Index", new { id = package.Id });
+                return RedirectToAction("Index", new { id = package.ProjectId });
+                //return RedirectToAction(nameof(Index),package.Id);
                 //Response.Redirect(Request.UrlReferrer.AbsoluteUri.ToString());
                 //return RedirectToAction("Create",
-            //new { returnUrl = Request.UrlReferrer.ToString() });
+                //new { returnUrl = Request.UrlReferrer.ToString() });
             }
 
             string useridd = HttpContext.User.Identity.Name;
@@ -186,7 +188,7 @@ namespace FinalProject.Controllers
                     }
                 }
                 //return RedirectToAction(nameof(Index));
-                return Redirect("https://localhost:44361");
+                return RedirectToAction("Index", new { id = package.ProjectId });
             }
             string useridd = HttpContext.User.Identity.Name;
             var userid = (from m in _context.AspNetUsers
@@ -233,7 +235,7 @@ namespace FinalProject.Controllers
             _context.Package.Remove(package);
             await _context.SaveChangesAsync();
             // return RedirectToAction(nameof(Index));
-            return Redirect("https://localhost:44361");
+            return RedirectToAction("Index", new { id = package.ProjectId });
         }
 
         private bool PackageExists(long id)

@@ -32,6 +32,7 @@ namespace FinalProject.Models
         public string Description { get; set; }
         public DateTime Deadline { get; set; }
         public decimal Goal { get; set; }
+        public decimal Progress { get; set; }
 
         [ForeignKey("CategoryId")]
         [InverseProperty("Project")]
