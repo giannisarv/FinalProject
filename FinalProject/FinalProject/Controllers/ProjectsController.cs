@@ -89,7 +89,7 @@ namespace FinalProject.Controllers
             {
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return Redirect("https://localhost:44361");
+                return RedirectToAction("Index", new { id = project.Id });
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
 
@@ -161,7 +161,7 @@ namespace FinalProject.Controllers
                         throw;
                     }
                 }
-                return Redirect("https://localhost:44361");
+                return RedirectToAction("Index", new { id = project.Id });
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
             string useridd = HttpContext.User.Identity.Name;
@@ -203,7 +203,7 @@ namespace FinalProject.Controllers
             var project = await _context.Project.FindAsync(id);
             _context.Project.Remove(project);
             await _context.SaveChangesAsync();
-            return Redirect("https://localhost:44361");
+            return RedirectToAction("Index", new { id = project.Id });
         }
 
         private bool ProjectExists(long id)

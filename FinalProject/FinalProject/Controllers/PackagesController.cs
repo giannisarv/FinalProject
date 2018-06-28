@@ -81,7 +81,7 @@ namespace FinalProject.Controllers
                 _context.Add(package);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
-                return Redirect("~");
+                return RedirectToAction("Index", new { id = package.ProjectId });
                 // return RedirectToAction( "Index", new RouteValueDictionary( 
                 // new { controller = "PackagesPrjct", action = "Index",  @id = id  } ) );
                 //return RedirectToPage()
@@ -161,8 +161,8 @@ namespace FinalProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
-                
+                return RedirectToAction("Index", new { id = package.ProjectId });
+
             }
             string useridd = HttpContext.User.Identity.Name;
             var userid = (from m in _context.AspNetUsers
@@ -209,7 +209,7 @@ namespace FinalProject.Controllers
             var package = await _context.Package.FindAsync(id);
             _context.Package.Remove(package);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = package.ProjectId });
         }
 
         private bool PackageExists(long id)

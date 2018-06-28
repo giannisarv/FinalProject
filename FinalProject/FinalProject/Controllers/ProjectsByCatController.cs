@@ -68,7 +68,7 @@ namespace FinalProject.Controllers
             {
                 _context.Add(project);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = project.Id });
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
             ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
@@ -123,7 +123,7 @@ namespace FinalProject.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = project.Id });
             }
             ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
             ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
@@ -158,7 +158,7 @@ namespace FinalProject.Controllers
             var project = await _context.Project.FindAsync(id);
             _context.Project.Remove(project);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", new { id = project.Id });
         }
 
         private bool ProjectExists(long id)
