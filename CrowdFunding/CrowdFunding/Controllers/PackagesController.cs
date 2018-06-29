@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CrowdFunding.Models;
+using System.Security.Claims;
 
 namespace CrowdFunding.Controllers
 {
@@ -19,10 +20,22 @@ namespace CrowdFunding.Controllers
         }
 
         // GET: Packages
-        public async Task<IActionResult> Index()
+        //public async Task<IActionResult> Index()
+        //{
+        //    var crowdFundingContext = _context.Package.Include(p => p.Project);
+        //    return View(await crowdFundingContext.ToListAsync());
+        //}
+
+        //Nikos Index
+        public async Task<IActionResult> Index(long? id)
         {
-            var crowdFundingContext = _context.Package.Include(p => p.Project);
-            return View(await crowdFundingContext.ToListAsync());
+            var pckgs = (from m in _context.Package
+                         where m.ProjectId == id
+                         select m);
+
+
+            var finalProjectContext = pckgs.Include(p => p.Project);
+            return View(await finalProjectContext.ToListAsync());
         }
 
         // GET: Packages/Details/5
@@ -44,28 +57,84 @@ namespace CrowdFunding.Controllers
             return View(package);
         }
 
-        // GET: Packages/Create
+        //// GET: Packages/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title");
+        //    return View();
+        //}
+
+        //Nik Create
         public IActionResult Create()
         {
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title");
+            var prjcts = from m in _context.Projects
+                             // join sem in _context.Package on m.Id equals sem.ProjectId
+                         where m.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                         select m;
+            ViewData["ProjectId"] = new SelectList(prjcts, "ProjectId", "Title");
             return View();
         }
 
-        // POST: Packages/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        public async Task<IActionResult> CreateSpecific(long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var package = await _context.Package
+                .Include(d => d.Project)
+                .FirstOrDefaultAsync(m => m.ProjectId == id);
+
+            //var projectPackages = from p in _context.Package
+            //                   where p.ProjectId == id
+            //                   select p;
+            var projectPackages = from p in _context.Projects
+                             // join sem in _context.Package on m.Id equals sem.ProjectId
+                         where p.ProjectId == id
+                         select p;
+
+            ViewData["ProjectId"] = new SelectList(projectPackages, "ProjectId", "Title");
+
+            return View();
+        }
+
+        //// POST: Packages/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("PackageId,ProjectId,Name,Description,Value")] Package package)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(package);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", package.ProjectId);
+        //    return View(package);
+        //}
+
+        //NIK
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PackageId,ProjectId,Name,Description,Value")] Package package)
+        public async Task<IActionResult> Create([Bind("Id,ProjectId,Name,Description,Value")] Package package)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(package);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = package.ProjectId });
             }
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", package.ProjectId);
-            return View(package);
+
+            var prjcts = (from m in _context.Projects
+                          where m.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                          select new { m.Title, m.ProjectId }).Distinct();
+
+            ViewData["ProjectId"] = new SelectList(prjcts, "Id", "Title", package.ProjectId);
+
+            return View();
         }
 
         // GET: Packages/Edit/5
