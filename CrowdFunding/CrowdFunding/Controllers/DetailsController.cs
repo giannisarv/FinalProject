@@ -65,10 +65,31 @@ namespace CrowdFunding.Controllers
                                where m.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
                                select m;
 
-            var userProjectContext = userProjects.Include(p => p.Category).Include(p => p.Person);
-            ViewData["ProjectId"] = new SelectList(userProjectContext, "ProjectId", "Title");
+            //var userProjectContext = userProjects.Include(p => p.Category).Include(p => p.Person);
+            ViewData["ProjectId"] = new SelectList(userProjects, "ProjectId", "Title");
             return View();
         }
+
+        public async Task<IActionResult> CreateSpecific (long? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var detail = await _context.Detail
+                .Include(d => d.Project)
+                .FirstOrDefaultAsync(m => m.ProjectId == id);
+
+            var userProjects = from p in _context.Projects
+                               where p.ProjectId == id
+                               select p;
+
+            ViewData["ProjectId"] = new SelectList(userProjects, "ProjectId", "Title");
+
+            return View();
+        }
+
 
         // POST: Details/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 

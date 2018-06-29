@@ -27,6 +27,7 @@ namespace CrowdFunding.Models
         [DataType(DataType.Date)]
         public DateTime Deadline { get; set; }
 
+        [Range(0, 9999.99)]
         public decimal Goal { get; set; }
 
         public Category Category { get; set; }

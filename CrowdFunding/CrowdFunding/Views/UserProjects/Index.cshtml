@@ -63,8 +63,16 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                <a asp-action="ProjectUpdate" asp-route-id="@item.ProjectId">Add Update</a> |
+                <a> @Html.ActionLink("Update2", "CreateSpecific", "Details", new { id = item.ProjectId }, null)</a> 
+                @* <a asp-action="ProjectUpdate" asp-route-id="@item.ProjectId">Add Update</a> |*@
                 <a asp-action="Delete" asp-route-id="@item.ProjectId">Delete</a>
+
+                @*<a>
+            @if (User.Identity.Name == item.Person.Email)
+            {
+                Html.ActionLink("Update2", "Create", "Details", new { id = item.ProjectId }, null);
+            }
+        </a>*@
             </td>
         </tr>
 }
