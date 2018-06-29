@@ -44,9 +44,11 @@ namespace FinalProject.Controllers
             //SqlCommand comm = new SqlCommand("UPDATE Project SET Progress=@goal WHERE Id==@id");
             //comm.Parameters.AddWithValue("@goal", prjpac);
             //comm.Parameters.AddWithValue("@id", prid);
-
-            var finalProjectContext = _context.Project.Include(p => p.Category).Include(p => p.Person);
-            return View("~/Views/ProjectsAll/Index.cshtml", await finalProjectContext.ToListAsync());
+            return RedirectToAction("Index", "ProjectsAll");
+            //var finalProjectContext = _context.Project.Include(p => p.Category).Include(p => p.Person);
+            //return View("~/Views/ProjectsAll/Index.cshtml", await finalProjectContext.ToListAsync());
+            //return RedirectToAction("Index", new { id = _context.Project.Id });
+            //return View("~/Views/ProjectsAll/Index.cshtml");
         }
 
         // GET: ProjectFunds/Details/5
@@ -118,11 +120,11 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Goal")] Project project)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,PersonId,CategoryId,HeroUrl,Title,Description,Deadline,Goal")] Project project)
         {
             if (id != project.Id)
             {
-                return NotFound();
+                //return NotFound();
             }
 
             if (ModelState.IsValid)
@@ -136,7 +138,7 @@ namespace FinalProject.Controllers
                 {
                     if (!ProjectExists(project.Id))
                     {
-                        return NotFound();
+                        //return NotFound();
                     }
                     else
                     {
