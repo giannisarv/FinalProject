@@ -163,10 +163,10 @@ namespace CrowdFunding.Controllers
         private long UserId() =>
             long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
-        // GET: ProjectUpdates/Create
-        public IActionResult ProjectUpdate(Project project)
+        //   not working
+        public IActionResult ProjectUpdate(long projectId)
         {
-            return RedirectToAction("Create", "Details", project.ProjectId);
+            return RedirectToAction("CreateSpecific", "Details", new { id = projectId });
         }
 
     }
