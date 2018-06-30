@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
 using System.Data.SqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class ProjectFundsController : Controller
     {
         private readonly FinalProjectContext _context;
@@ -20,6 +22,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectFunds
+        [AllowAnonymous]
         public async Task<IActionResult> Index(long? id)
         {
 
@@ -52,6 +55,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectFunds/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)

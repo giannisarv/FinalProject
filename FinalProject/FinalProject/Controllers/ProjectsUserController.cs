@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
 using FinalProject.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class ProjectsUserController : Controller
     {
         private readonly FinalProjectContext _context;
@@ -18,6 +20,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectsUser
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             //var mail = User.Identity.Name;
@@ -38,6 +41,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectsUser/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
