@@ -63,7 +63,7 @@
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProjectId">Details</a> |
-                <a> @Html.ActionLink("Updates", "Index", "Details", new { id = item.ProjectId }, null)</a> |
+                <a> @Html.ActionLink("Updates", "SpecificIndex", "Details", new { id = item.ProjectId }, null)</a> |
                 @*<a> @Html.ActionLink("Add Update", "CreateSpecific", "Details", new { id = item.ProjectId }, null)</a> |*@
                 <a> @Html.ActionLink("Packages", "Index", "Packages", new { id = item.ProjectId }, null)</a> |
                 @*<a> @Html.ActionLink("Add Package", "CreateSpecific", "Packages", new { id = item.ProjectId }, null)</a> |*@

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using CrowdFunding.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using System.Linq;
+
 
 namespace CrowdFunding.Controllers
 {
@@ -28,6 +30,27 @@ namespace CrowdFunding.Controllers
 
             return View(projects);
         }
+
+        public async Task<IActionResult> ProjectsByCategory(long? id)
+        {
+            if (id is null)
+            {
+                return NotFound();
+            }
+
+            var categorisedProjects = from p in _context.Projects
+                                      where p.CategoryId == id
+                                      select p;
+
+            var categoriseProjectContext = await categorisedProjects
+               .Include(c => c.Category)
+               .ToListAsync();
+
+
+            //return View(categoriseProjectContext);
+            return View(categoriseProjectContext);
+        }
+
 
         public async Task<IActionResult> Details(long id)
         {

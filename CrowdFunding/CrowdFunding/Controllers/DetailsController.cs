@@ -20,8 +20,28 @@ namespace CrowdFunding.Controllers
         }
 
         // GET: Details
-        public async Task<IActionResult> Index(long? id)
+        public async Task<IActionResult> Index()
         {
+            //get projectDetails from userProjects
+            var projectDetails = from d in _context.Detail
+                                 join p in _context.Projects on d.ProjectId equals p.ProjectId
+                                 where p.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                                 select d;
+
+            var userProjectDetailsContext = await projectDetails
+                .Include(p => p.Project)
+                //.Include(p => p.Person)
+                .ToListAsync();
+            return View(userProjectDetailsContext);
+        }
+
+        public async Task<IActionResult> SpecificIndex(long? id)
+        {
+            if (id is null)
+            {
+                return await Index();
+                //return NotFound();
+            }
             //get projectDetails from userProjects
             var projectDetails = from d in _context.Detail
                                  join p in _context.Projects on d.ProjectId equals p.ProjectId
@@ -34,9 +54,6 @@ namespace CrowdFunding.Controllers
                 //.Include(p => p.Person)
                 .ToListAsync();
             return View(userProjectDetailsContext);
-
-            //var crowdFundingContext = _context.Detail.Include(d => d.Project);
-            //return View(await crowdFundingContext.ToListAsync());
         }
 
         // GET: Details/Details/5
