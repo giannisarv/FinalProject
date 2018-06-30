@@ -41,7 +41,7 @@ namespace FinalProject
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            var connection = "Server=CPWLT157\\SQLEXPRESS;Database=FinalProjectNik;User Id=sa;Password=20prince!;Trusted_Connection=True;MultipleActiveResultSets=true";
+            var connection = "Server=localhost\\SQLEXPRESS;Database=FinalProject;Trusted_Connection=true";
             services.AddDbContext<FinalProjectContext>(
             options => options.UseSqlServer(connection));
 
