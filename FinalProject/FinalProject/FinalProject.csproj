@@ -6,9 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IdeaTech.System.Web.Mvc.Extensions" Version="1.0.1" />
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.6" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.2" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.1.0" />
