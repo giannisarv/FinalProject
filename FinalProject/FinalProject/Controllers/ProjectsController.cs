@@ -113,6 +113,8 @@ namespace FinalProject.Controllers
         // GET: Projects/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
+
+
             if (id == null)
             {
                 return NotFound();
@@ -140,18 +142,27 @@ namespace FinalProject.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,PersonId,CategoryId,HeroUrl,Title,Description,Deadline,Goal")] Project project)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,PersonId,CategoryId,HeroUrl,Title,Description,Deadline,Goal,Progress")] Project project)
         {
             if (id != project.Id)
             {
                 return NotFound();
             }
 
+            var dbproject = await _context.Project.SingleOrDefaultAsync(p => p.Id == id);
+            dbproject.Category = project.Category;
+            dbproject.HeroUrl = project.HeroUrl;
+            dbproject.Title = project.Title;
+            dbproject.Description = project.Description;
+            dbproject.Deadline = project.Deadline;
+            dbproject.Goal = project.Goal;
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(project);
+
+                    _context.Update(dbproject);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -166,8 +177,12 @@ namespace FinalProject.Controllers
                     }
                 }
                 return RedirectToAction("Index", new { id = project.Id });
+                //return RedirectToAction("~/Views/ProjectsAll/Index.cshtml", new { id = project.Id });
+                //return View("~/Views/ProjectsAll/Index.cshtml", await finalProjectContext.ToListAsync());
+
+                
             }
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", project.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title", dbproject.CategoryId);
             string useridd = HttpContext.User.Identity.Name;
 
             var userid = from m in _context.AspNetUsers
@@ -176,7 +191,7 @@ namespace FinalProject.Controllers
 
             ViewData["PersonId"] = new SelectList(userid);
             //ViewData["PersonId"] = new SelectList(_context.AspNetUsers, "Id", "Id", project.PersonId);
-            return View(project);
+            return View(dbproject);
         }
 
         // GET: Projects/Delete/5
