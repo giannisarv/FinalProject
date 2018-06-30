@@ -1,14 +1,19 @@
 ﻿@model IEnumerable<FinalProject.Models.Project>
 
+
 @{
     ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        <a asp-controller="Projects"
+           asp-action="Create">Create New</a>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -40,46 +45,50 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HeroUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Deadline)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Goal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Person.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Progress)%
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
-                <!--<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>-->
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.HeroUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Goal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Person.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Progress)
+                </td>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <td>
+                        <!-- <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> -->
+                        @if (User.Identity.Name == item.Person.Email)
+                        {
+                            <a asp-controller="Projects" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                            <a asp-controller="Projects" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            //<a asp-controller="Projects" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                            @Html.ActionLink("Packages", "Index", "PackagesPrjct", new { id = item.Id }, null)}
+                        else
+                        {@Html.ActionLink("Packages", "Index", "Packages", new { id = item.Id }, null)}
+                        <!--<a asp-action="Delete" asp-route-id="@item.Id">Packages</a>-->
+                    </td>}
 
-                <a>
-                    @if (User.Identity.Name == item.Person.Email)
-                    {
-                        Html.ActionLink("Packages", "Index", "PackagesPrjct", new { id = item.Id }, null);
-                    }
-                </a>
-                
-            </td>
-        </tr>
-}
+            </tr>
+        }
     </tbody>
 </table>

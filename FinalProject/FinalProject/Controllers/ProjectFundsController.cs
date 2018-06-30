@@ -29,7 +29,7 @@ namespace FinalProject.Controllers
             var prjpac = (from m in _context.Package
                           join sem in _context.Project on m.ProjectId equals sem.Id
                           where m.Id == id
-                          select ((sem.Progress + m.Value)*100)/sem.Goal).FirstOrDefault();
+                          select (sem.Progress + m.Value).FirstOrDefault();
 
             var prid = (from m in _context.Package
                         join sem in _context.Project on m.ProjectId equals sem.Id
@@ -47,7 +47,7 @@ namespace FinalProject.Controllers
             //SqlCommand comm = new SqlCommand("UPDATE Project SET Progress=@goal WHERE Id==@id");
             //comm.Parameters.AddWithValue("@goal", prjpac);
             //comm.Parameters.AddWithValue("@id", prid);
-            return RedirectToAction("Index", "ProjectsAll");
+            return RedirectToAction("Index", "Projects");
             //var finalProjectContext = _context.Project.Include(p => p.Category).Include(p => p.Person);
             //return View("~/Views/ProjectsAll/Index.cshtml", await finalProjectContext.ToListAsync());
             //return RedirectToAction("Index", new { id = _context.Project.Id });
