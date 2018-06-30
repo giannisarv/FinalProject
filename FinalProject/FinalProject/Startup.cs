@@ -41,7 +41,7 @@ namespace FinalProject
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            var connection = @"Server=LOCALHOST\SQLEXPRESS;
+            var connection = @"Server=PISTN-PC\SQLEXPRESS;
             Database=FinalProject;
             Trusted_Connection=True;
             ConnectRetryCount=0";
