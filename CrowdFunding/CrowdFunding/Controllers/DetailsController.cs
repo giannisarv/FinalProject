@@ -20,12 +20,13 @@ namespace CrowdFunding.Controllers
         }
 
         // GET: Details
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(long? id)
         {
             //get projectDetails from userProjects
             var projectDetails = from d in _context.Detail
                                  join p in _context.Projects on d.ProjectId equals p.ProjectId
                                  where p.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                                        && d.ProjectId == id
                                  select d;
 
             var userProjectDetailsContext = await projectDetails
