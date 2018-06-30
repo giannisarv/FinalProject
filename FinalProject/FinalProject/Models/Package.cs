@@ -20,7 +20,9 @@ namespace FinalProject.Models
         [StringLength(255)]
         public string Name { get; set; }
         [Required]
+        [StringLength (255)]
         public string Description { get; set; }
+        [Required]
         public decimal Value { get; set; }
 
         [ForeignKey("ProjectId")]

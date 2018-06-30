@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinalProject.Controllers
 {
@@ -65,6 +66,22 @@ namespace FinalProject.Controllers
             return View(project);
         }
 
+
+        public class DateValid : ValidationAttribute
+        {
+            protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+            {
+                value = (DateTime)value;
+                if (DateTime.Now.AddYears(2).CompareTo(value) >= 0 && DateTime.Now.CompareTo(value) <= 0)
+                {
+                    return ValidationResult.Success;
+                }
+                else
+                {
+                    return new ValidationResult("Date must be within the next two years!");
+                }
+            }
+        }
         // GET: Projects/Create
         public IActionResult Create()
         {

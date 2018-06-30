@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static FinalProject.Controllers.ProjectsController;
 
 namespace FinalProject.Models
 {
@@ -30,7 +31,10 @@ namespace FinalProject.Models
         public string Title { get; set; }
         [Required]
         public string Description { get; set; }
+        [Required]
+        [DateValid]
         public DateTime Deadline { get; set; }
+        [Required]
         public decimal Goal { get; set; }
         public decimal Progress { get; set; }
 
@@ -46,5 +50,6 @@ namespace FinalProject.Models
         public ICollection<Update> Update { get; set; }
 
         //public Package Name { get; set; }//Navigation property
+        
     }
 }
