@@ -38,6 +38,17 @@ namespace CrowdFunding.Controllers
             return View(await finalProjectContext.ToListAsync());
         }
 
+        public async Task<IActionResult> AnonIndex (long? id)
+        {
+            var pckgs = (from m in _context.Package
+                         where m.ProjectId == id
+                         select m);
+
+
+            var finalProjectContext = pckgs.Include(p => p.Project);
+            return View(await finalProjectContext.ToListAsync());
+        }
+
         // GET: Packages/Details/5
         public async Task<IActionResult> Details(long? id)
         {

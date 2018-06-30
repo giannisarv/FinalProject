@@ -35,6 +35,25 @@ namespace CrowdFunding.Controllers
             return View(userProjectDetailsContext);
         }
 
+        public async Task<IActionResult> AnonIndex (long? id)
+        {
+            if (id is null)
+            {
+                return NotFound();
+            }
+            //get projectDetails from userProjects
+            var projectDetails = from d in _context.Detail
+                                 join p in _context.Projects on d.ProjectId equals p.ProjectId
+                                 where d.ProjectId == id
+                                 select d;
+
+            var userProjectDetailsContext = await projectDetails
+                .Include(p => p.Project)
+                //.Include(p => p.Person)
+                .ToListAsync();
+            return View(userProjectDetailsContext);
+        }
+
         public async Task<IActionResult> SpecificIndex(long? id)
         {
             if (id is null)
@@ -45,8 +64,9 @@ namespace CrowdFunding.Controllers
             //get projectDetails from userProjects
             var projectDetails = from d in _context.Detail
                                  join p in _context.Projects on d.ProjectId equals p.ProjectId
-                                 where p.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
-                                        && d.ProjectId == id
+                                 where d.ProjectId == id
+                                 //where p.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+                                 //       && d.ProjectId == id
                                  select d;
 
             var userProjectDetailsContext = await projectDetails

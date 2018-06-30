@@ -52,29 +52,29 @@ namespace CrowdFunding.Controllers
             return View(categoriseProjectContext);
         }
 
-        //public IActionResult Fund (long? id)
-        //{
+        public async Task<IActionResult> Fund (long? id)
+        {
 
-        //    var prjpac = (from p in _context.Package
-        //                  join pr in _context.Projects on p.ProjectId equals pr.ProjectId
-        //                  where p.ProjectId == id
-        //                  select (pr.Progress + p.Value)).FirstOrDefault();
+            var prjpac = (from p in _context.Package
+                          join pr in _context.Projects on p.ProjectId equals pr.ProjectId
+                          where p.ProjectId == id
+                          select (pr.Progress + p.Value)).FirstOrDefault();
 
-        //    var prid = (from p in _context.Package
-        //                join pr in _context.Projects on p.ProjectId equals pr.ProjectId
-        //                where p.ProjectId == id
-        //                select p.ProjectId).FirstOrDefault();
+            var prid = (from p in _context.Package
+                        join pr in _context.Projects on p.ProjectId equals pr.ProjectId
+                        where p.ProjectId == id
+                        select p.ProjectId).FirstOrDefault();
 
-        //    var result = (from p in _context.Projects
-        //                  where p.ProjectId == prid
-        //                  select p).SingleOrDefault();
+            var result = (from p in _context.Projects
+                          where p.ProjectId == prid
+                          select p).SingleOrDefault();
 
-        //    result.Progress = prjpac;
+            result.Progress = prjpac;
 
-        //    _context.SaveChanges();
+            _context.SaveChanges();
 
-        //    return RedirectToAction("Index", "Projects");
-        //}
+            return RedirectToAction("Index", "Projects");
+        }
 
         public async Task<IActionResult> Details(long id)
         {
