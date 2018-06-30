@@ -30,7 +30,7 @@ namespace CrowdFunding.Controllers
 
             return View(projects);
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> ProjectsByCategory(long? id)
         {
             if (id is null)
@@ -44,6 +44,7 @@ namespace CrowdFunding.Controllers
 
             var categoriseProjectContext = await categorisedProjects
                .Include(c => c.Category)
+               .Include(p => p.Person)
                .ToListAsync();
 
 
@@ -51,6 +52,29 @@ namespace CrowdFunding.Controllers
             return View(categoriseProjectContext);
         }
 
+        //public IActionResult Fund (long? id)
+        //{
+
+        //    var prjpac = (from p in _context.Package
+        //                  join pr in _context.Projects on p.ProjectId equals pr.ProjectId
+        //                  where p.ProjectId == id
+        //                  select (pr.Progress + p.Value)).FirstOrDefault();
+
+        //    var prid = (from p in _context.Package
+        //                join pr in _context.Projects on p.ProjectId equals pr.ProjectId
+        //                where p.ProjectId == id
+        //                select p.ProjectId).FirstOrDefault();
+
+        //    var result = (from p in _context.Projects
+        //                  where p.ProjectId == prid
+        //                  select p).SingleOrDefault();
+
+        //    result.Progress = prjpac;
+
+        //    _context.SaveChanges();
+
+        //    return RedirectToAction("Index", "Projects");
+        //}
 
         public async Task<IActionResult> Details(long id)
         {
@@ -116,6 +140,7 @@ namespace CrowdFunding.Controllers
             if (ModelState.IsValid) {
                 
                 dbProject.Goal = project.Goal;
+                dbProject.Progress = project.Progress;
                 dbProject.Title = project.Title;
                 dbProject.Deadline = project.Deadline;
                 dbProject.CategoryId = project.CategoryId;

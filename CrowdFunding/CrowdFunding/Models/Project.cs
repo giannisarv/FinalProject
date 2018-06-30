@@ -29,6 +29,8 @@ namespace CrowdFunding.Models
 
         [Range(0, 9999.99)]
         public decimal Goal { get; set; }
+        [BindNever]
+        public decimal Progress { get; set; }
 
         public Category Category { get; set; }
         public Person Person { get; set; }

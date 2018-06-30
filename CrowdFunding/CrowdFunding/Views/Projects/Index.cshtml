@@ -25,13 +25,16 @@
                 @Html.DisplayNameFor(model => model.Deadline)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Goal)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Person)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Goal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Progress)
             </th>
             <th></th>
         </tr>
@@ -52,13 +55,16 @@
                 @Html.DisplayFor(modelItem => item.Deadline)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Goal)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Person.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Goal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Progress)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProjectId">Edit</a> |
