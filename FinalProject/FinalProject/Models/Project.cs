@@ -35,6 +35,7 @@ namespace FinalProject.Models
         [DateValid]
         public DateTime Deadline { get; set; }
         [Required]
+        [Range(0,1000000)]
         public decimal Goal { get; set; }
         public decimal Progress { get; set; }
 
