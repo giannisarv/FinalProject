@@ -29,7 +29,7 @@ namespace FinalProject.Controllers
             var prjpac = (from m in _context.Package
                           join sem in _context.Project on m.ProjectId equals sem.Id
                           where m.Id == id
-                          select (sem.Progress + m.Value).FirstOrDefault();
+                          select (sem.Progress + m.Value)).FirstOrDefault();
 
             var prid = (from m in _context.Package
                         join sem in _context.Project on m.ProjectId equals sem.Id
