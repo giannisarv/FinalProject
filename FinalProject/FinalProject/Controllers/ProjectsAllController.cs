@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class ProjectsAllController : Controller
     {
         private readonly FinalProjectContext _context;
@@ -19,6 +21,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectsAll
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var finalProjectContext = _context.Project.Include(p => p.Category).Include(p => p.Person);
@@ -26,6 +29,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectsAll/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)

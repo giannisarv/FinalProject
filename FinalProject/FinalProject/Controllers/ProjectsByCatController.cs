@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class ProjectsByCatController : Controller
     {
         private readonly FinalProjectContext _context;
@@ -19,6 +21,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectsByCat
+        [AllowAnonymous]
         public async Task<IActionResult> Index(long? id)
         {
             var prjcat = (from m in _context.Project
@@ -30,6 +33,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: ProjectsByCat/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)

@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly FinalProjectContext _context;
@@ -22,6 +24,7 @@ namespace FinalProject.Controllers
        
 
         // GET: Projects
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             string useridd = HttpContext.User.Identity.Name;
@@ -42,6 +45,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: Projects/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)

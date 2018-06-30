@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FinalProject.Models;
 using System.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject.Controllers
 {
+    [Authorize]
     public class PackagesPrjctController : Controller
     {
         private readonly FinalProjectContext _context;
@@ -19,6 +21,7 @@ namespace FinalProject.Controllers
         }
 
         // GET: PackagesPrjct
+        [AllowAnonymous]
         public async Task<IActionResult> Index(long? id)
         {
             var pckgs = (from m in _context.Package
@@ -43,6 +46,7 @@ namespace FinalProject.Controllers
 
 
         //GET: PackagesPrjct/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
