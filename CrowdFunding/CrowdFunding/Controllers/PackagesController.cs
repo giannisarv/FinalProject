@@ -97,13 +97,10 @@ namespace CrowdFunding.Controllers
                 .Include(d => d.Project)
                 .FirstOrDefaultAsync(m => m.ProjectId == id);
 
-            //var projectPackages = from p in _context.Package
-            //                   where p.ProjectId == id
-            //                   select p;
             var projectPackages = from p in _context.Projects
                              // join sem in _context.Package on m.Id equals sem.ProjectId
-                         where p.ProjectId == id
-                         select p;
+                                 where p.ProjectId == id
+                                 select p;
 
             ViewData["ProjectId"] = new SelectList(projectPackages, "ProjectId", "Title");
 
