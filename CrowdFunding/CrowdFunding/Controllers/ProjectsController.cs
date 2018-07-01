@@ -55,20 +55,43 @@ namespace CrowdFunding.Controllers
         public async Task<IActionResult> Fund (long? id)
         {
 
-            var packageValue = (from p in _context.Package
-                              where p.PackageId == id
-                              select p.Value).FirstOrDefault();
+            //var packageValue = (from p in _context.Package
+            //                  where p.PackageId == id
+            //                  select p.Value).FirstOrDefault();
 
 
-            var result = (from pr in _context.Projects
-                         join p in _context.Package on pr.ProjectId equals (p.ProjectId)
-                         where p.PackageId == id
-                         select pr).FirstOrDefault();
+            //var result = (from pr in _context.Projects
+            //             join p in _context.Package on pr.ProjectId equals (p.ProjectId)
+            //             where p.PackageId == id
+            //             select pr).FirstOrDefault();
 
-            result.Progress = packageValue;
+            //result.Progress = packageValue;
+
+            //_context.SaveChanges();
+
+            //return RedirectToAction("Index", "Projects");
+
+            var prjpac = (from m in _context.Package
+                          join sem in _context.Projects on m.ProjectId equals sem.ProjectId
+                          where m.PackageId == id
+                          select (sem.Progress + m.Value)).FirstOrDefault();
+
+            var prid = (from m in _context.Package
+                        join sem in _context.Projects on m.ProjectId equals sem.ProjectId
+                        where m.PackageId == id
+                        select m.ProjectId).FirstOrDefault();
+
+            var result = (from p in _context.Projects
+                          where p.ProjectId == prid
+                          select p).SingleOrDefault();
+
+            result.Progress = prjpac;
 
             _context.SaveChanges();
 
+            //SqlCommand comm = new SqlCommand("UPDATE Project SET Progress=@goal WHERE Id==@id");
+            //comm.Parameters.AddWithValue("@goal", prjpac);
+            //comm.Parameters.AddWithValue("@id", prid);
             return RedirectToAction("Index", "Projects");
         }
 

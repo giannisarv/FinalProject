@@ -73,7 +73,7 @@ namespace CrowdFunding.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return RedirectToAction("Index", new { Id = project.ProjectId });
         }
 
         public async Task<IActionResult> Edit(long id)

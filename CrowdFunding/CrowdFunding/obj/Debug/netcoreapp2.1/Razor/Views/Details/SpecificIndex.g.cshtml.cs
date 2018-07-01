@@ -94,7 +94,7 @@ using CrowdFunding.Models;
             WriteLiteral("            ");
             EndContext();
             BeginContext(508, 44, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "29b165cdaa7d4429a000ca284c664b09", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "3edda1b0b31546599f72db3ef6c10127", async() => {
                 BeginContext(531, 17, true);
                 WriteLiteral("Create New Update");
                 EndContext();
@@ -215,7 +215,7 @@ using CrowdFunding.Models;
             WriteLiteral("\r\n                </td>\r\n                <td>\r\n                    ");
             EndContext();
             BeginContext(1660, 59, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "b174396822aa4af78a551e88ffbbe1b4", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "a6b5a740e4f54235908e2d717007d2ef", async() => {
                 BeginContext(1711, 4, true);
                 WriteLiteral("Edit");
                 EndContext();
@@ -250,7 +250,7 @@ using CrowdFunding.Models;
             WriteLiteral(" |\r\n                    ");
             EndContext();
             BeginContext(1743, 65, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6ee946c8a8ce480d89c06b01eb251739", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "122460976b0a495689b45e6ee53deb4b", async() => {
                 BeginContext(1797, 7, true);
                 WriteLiteral("Details");
                 EndContext();
@@ -285,7 +285,7 @@ using CrowdFunding.Models;
             WriteLiteral(" |\r\n                    ");
             EndContext();
             BeginContext(1832, 63, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "ba61f914eea94349aa988c6314d2bee0", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("a", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "564c6009d59b45db9fb3ddfe0660e546", async() => {
                 BeginContext(1885, 6, true);
                 WriteLiteral("Delete");
                 EndContext();
