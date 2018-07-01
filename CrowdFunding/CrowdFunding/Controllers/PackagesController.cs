@@ -133,7 +133,7 @@ namespace CrowdFunding.Controllers
             {
                 _context.Add(package);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", new { id = package.ProjectId });
+                return RedirectToAction(nameof(Index));
             }
 
             var prjcts = (from m in _context.Projects

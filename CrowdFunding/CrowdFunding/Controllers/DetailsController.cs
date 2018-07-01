@@ -77,7 +77,7 @@ namespace CrowdFunding.Controllers
         }
 
         // GET: Details/Details/5
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details (long? id)
         {
             if (id == null)
             {
@@ -147,7 +147,7 @@ namespace CrowdFunding.Controllers
         }
 
         // GET: Details/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        public async Task<IActionResult> Edit (long? id)
         {
             if (id == null)
             {
