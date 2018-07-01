@@ -147,7 +147,7 @@ namespace CrowdFunding.Controllers
         }
 
         // GET: Details/Edit/5
-        public async Task<IActionResult> Edit (long? id)
+        public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
             {
@@ -160,16 +160,16 @@ namespace CrowdFunding.Controllers
                 return NotFound();
             }
 
-            //ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", detail.ProjectId);
-            //return View(detail);
+            ViewData["ProjectId"] = new SelectList(_context.Projects, "ProjectId", "Title", detail.ProjectId);
+            return View(detail);
 
-            var userProjects = from m in _context.Projects
-                               where m.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
-                               select m;
+            //var userProjects = from m in _context.Projects
+            //                   where m.PersonId == Convert.ToInt64(User.FindFirstValue(ClaimTypes.NameIdentifier))
+            //                   select m;
 
-            var userProjectContext = userProjects.Include(p => p.Category).Include(p => p.Person);
-            ViewData["ProjectId"] = new SelectList(userProjectContext, "ProjectId", "Title");
-            return View();
+            //var userProjectContext = userProjects.Include(p => p.Category).Include(p => p.Person);
+            //ViewData["ProjectId"] = new SelectList(userProjectContext, "ProjectId", "Title");
+            //return View();
         }
 
         // POST: Details/Edit/5
